@@ -1,310 +1,296 @@
-# rastreio-2026<!DOCTYPE html>
-<html lang="pt-br">
+
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Suas Encomendas</title>
+<title>CekPack PRO | Rastreamento</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+
+:root{
+--bg:#020617;
+--card:rgba(15,23,42,0.7);
+--brand:#fbbf24;
+--text:#f8fafc;
+--muted:#94a3b8;
+--border:rgba(255,255,255,0.08);
+--ok:#10b981;
+}
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:'Plus Jakarta Sans',sans-serif;
+}
 
 body{
-background:linear-gradient(135deg,#0f172a,#1e293b);
-color:#fff;
-transition:0.4s;
+background:var(--bg);
+color:var(--text);
+min-height:100vh;
+padding:20px;
 }
 
-.light{
-background:#f1f5f9;
-color:#111;
+.container{
+max-width:1100px;
+margin:auto;
 }
 
-button{cursor:pointer;border:none}
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:40px;
+}
 
-/* SPLASH */
-#splash{
-position:fixed;
-width:100%;
-height:100vh;
-background:#0f172a;
+.logo{
+font-size:24px;
+font-weight:800;
+color:#fbbf24;
+}
+
+.live-dot{
 display:flex;
 align-items:center;
-justify-content:center;
-flex-direction:column;
-z-index:9999;
+gap:8px;
+font-size:12px;
+color:#10b981;
+font-weight:600;
 }
 
-#splash h1{
-font-size:28px;
-animation:pulse 1.5s infinite;
+.dot{
+width:8px;
+height:8px;
+background:#10b981;
+border-radius:50%;
+box-shadow:0 0 10px #10b981;
+animation:pulse 2s infinite;
 }
 
 @keyframes pulse{
-50%{opacity:0.5}
+0%{opacity:1}
+50%{opacity:0.4}
+100%{opacity:1}
 }
 
-/* LOGIN */
-.login{
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-}
-
-.login-box{
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(15px);
-padding:40px;
-border-radius:20px;
-width:320px;
+.hero{
 text-align:center;
+padding:40px 0;
 }
 
-.login-box input{
-width:100%;
-padding:12px;
-margin-bottom:15px;
-border-radius:10px;
-border:none;
-}
-
-.login-box button{
-width:100%;
-padding:12px;
-border-radius:10px;
-background:#22c55e;
-color:#fff;
-font-weight:bold;
-}
-
-/* SISTEMA */
-.container{display:none;padding:20px;animation:fade 0.5s}
-@keyframes fade{from{opacity:0}to{opacity:1}}
-
-.top{
-display:flex;
-justify-content:space-between;
-margin-bottom:15px;
-align-items:center;
-}
-
-.theme-btn{
-background:#3b82f6;
-padding:6px 10px;
-border-radius:8px;
-color:#fff;
-}
-
-.card-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:10px;
-margin-bottom:15px;
-}
-
-.card{
-background:rgba(255,255,255,0.05);
-padding:15px;
-border-radius:15px;
-text-align:center;
-}
-
-input[type=text]{
-width:100%;
-padding:12px;
-border-radius:10px;
-border:none;
+.hero h1{
+font-size:40px;
 margin-bottom:10px;
 }
 
-.rastrear{
-width:100%;
+.hero p{
+color:#94a3b8;
+margin-bottom:30px;
+}
+
+.search-box{
+display:flex;
+gap:10px;
+max-width:500px;
+margin:auto;
+background:#0f172a;
+padding:10px;
+border-radius:20px;
+border:1px solid rgba(255,255,255,0.08);
+}
+
+.search-box input{
+flex:1;
+background:none;
+border:none;
+color:white;
 padding:12px;
-border-radius:10px;
-background:#3b82f6;
-color:#fff;
-font-weight:bold;
+outline:none;
 }
 
-.progress{
-width:100%;
-height:12px;
-background:#1e293b;
-border-radius:10px;
-overflow:hidden;
-margin:15px 0;
-}
-
-.bar{
-width:0%;
-height:100%;
-background:#f59e0b;
-transition:1s;
-}
-
-.status-box{
-background:rgba(255,255,255,0.05);
-padding:15px;
+.search-box button{
+background:#fbbf24;
+border:none;
+padding:12px 24px;
 border-radius:12px;
-margin-bottom:15px;
+font-weight:800;
+cursor:pointer;
+}
+
+#error{
+display:none;
+margin-top:20px;
+color:red;
+}
+
+#results{
+display:none;
+margin-top:50px;
+}
+
+.card{
+background:rgba(15,23,42,0.7);
+border:1px solid rgba(255,255,255,0.08);
+padding:30px;
+border-radius:24px;
+}
+
+.res-id{
+font-size:32px;
+font-weight:800;
+color:#fbbf24;
+margin-bottom:20px;
+}
+
+.info-item{
+display:flex;
+justify-content:space-between;
+padding:10px 0;
+border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.step{
+margin-top:20px;
+padding-left:20px;
+border-left:3px solid #fbbf24;
+}
+
+.step p{
+font-weight:700;
+}
+
+.step span{
+font-size:13px;
+color:#94a3b8;
 }
 
 #map{
-height:250px;
-border-radius:15px;
-margin-bottom:15px;
+height:300px;
+margin-top:20px;
+border-radius:20px;
 }
 
-.history-item{
-background:rgba(255,255,255,0.05);
-padding:8px;
-border-radius:8px;
-margin-bottom:5px;
-font-size:13px;
-}
 </style>
 </head>
+
 <body>
 
-<div id="splash">
-<h1>📦 Suas Encomendas</h1>
-<p>Carregando sistema...</p>
+<header class="container">
+
+<div class="logo">CekPack PRO</div>
+
+<div class="live-dot">
+<div class="dot"></div>
+SISTEMA ATIVO
 </div>
 
-<div class="login" id="login" style="display:none;">
-<div class="login-box">
-<h2>Login</h2>
-<input type="text" id="user" placeholder="Usuário">
-<input type="password" placeholder="Senha">
-<button onclick="entrar()">Entrar</button>
-</div>
-</div>
+</header>
 
-<div class="container" id="sistema">
+<div class="container">
 
-<div class="top">
-<div id="bemvindo"></div>
-<div>
-<span id="hora"></span>
-<button class="theme-btn" onclick="toggleTheme()">🌙</button>
-</div>
-</div>
+<section class="hero">
 
-<div class="card-grid">
-<div class="card">Em rota<br><b id="rota">0</b></div>
-<div class="card">Em trânsito<br><b id="transito">0</b></div>
-<div class="card">Entregues<br><b id="entregue">0</b></div>
-<div class="card">Total<br><b id="total">0</b></div>
+<h1>Sua carga, nossa prioridade.</h1>
+
+<p>Rastreamento global em tempo real.</p>
+
+<div class="search-box">
+
+<input type="text" id="trackInput" placeholder="Código de rastreio">
+
+<button onclick="buscar()">Rastrear</button>
+
 </div>
 
-<input type="text" id="codigo" placeholder="Digite o código de rastreio">
-<button class="rastrear" onclick="rastrear()">Rastrear</button>
+<p id="error">Objeto não localizado.</p>
 
-<div class="progress"><div class="bar" id="bar"></div></div>
+</section>
 
-<div class="status-box" id="status">Digite um código para rastrear.</div>
+<section id="results">
+
+<div class="card">
+
+<div id="res-id" class="res-id"></div>
+
+<div class="info-item">
+<span>Status</span>
+<strong id="res-status"></strong>
+</div>
+
+<div class="info-item">
+<span>Localização</span>
+<strong id="res-local"></strong>
+</div>
+
+<div class="info-item">
+<span>Entrega prevista</span>
+<strong>17/03/2026</strong>
+</div>
 
 <div id="map"></div>
 
-<h3>Histórico</h3>
-<div id="historico"></div>
+<div class="step">
+<p>Objeto em rota</p>
+<span>Local: Pedra Lavrada - PB • Data: 15/03/2026</span>
+</div>
 
 </div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</section>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-let map;
 
-setTimeout(()=>{
-document.getElementById("splash").style.display="none";
-document.getElementById("login").style.display="flex";
-},2000);
+let map
 
-function entrar(){
-const nome=document.getElementById("user").value||"Usuário";
-document.getElementById("bemvindo").innerHTML="Bem-vindo, "+nome;
-document.getElementById("login").style.display="none";
-document.getElementById("sistema").style.display="block";
-atualizarHora();
-setInterval(atualizarHora,1000);
-} condition ? true : false
+function buscar(){
 
-function atualizarHora(){
-const agora=new Date();
-document.getElementById("hora").innerHTML=
-agora.toLocaleDateString()+" "+agora.toLocaleTimeString();
+let code=document.getElementById("trackInput").value.trim()
+
+if(code==="BR987654321BR"){
+
+document.getElementById("results").style.display="block"
+document.getElementById("error").style.display="none"
+
+document.getElementById("res-id").innerText=code
+document.getElementById("res-status").innerText="Objeto em rota"
+document.getElementById("res-local").innerText="Pedra Lavrada - PB"
+
+setTimeout(initMap,200)
+
+}else{
+
+document.getElementById("results").style.display="none"
+document.getElementById("error").style.display="block"
+
 }
 
-function toggleTheme(){
-document.body.classList.toggle("light");
 }
 
-function rastrear(){
-const codigo=document.getElementById("codigo").value.trim();
-if(!codigo)return;
+function initMap(){
 
-let dados=JSON.parse(localStorage.getItem("dadosSite"));
-if(!dados){
-alert("Configure no painel admin primeiro.");
-return;
+if(map){
+map.remove()
 }
 
-document.getElementById("bar").style.width=dados.porcentagem+"%";
+map=L.map('map').setView([-6.7607,-36.4755],11)
 
-const agora=new Date();
-document.getElementById("status").innerHTML=
-"📦 Código: "+codigo+"<br>"+
-"Status: "+dados.status+" ("+dados.porcentagem+"%)<br>"+
-"Local: "+dados.cidade+"<br>"+
-"Atualizado em: "+agora.toLocaleString();
-
-document.getElementById("rota").innerHTML=dados.rota;
-document.getElementById("transito").innerHTML=dados.transito;
-document.getElementById("entregue").innerHTML=dados.entregues;
-document.getElementById("total").innerHTML=
-Number(dados.rota)+Number(dados.transito)+Number(dados.entregues);
-
-iniciarMapa(dados.cidade);
-salvarHistorico(codigo);
-}
-
-async function iniciarMapa(cidade){
-if(map){map.remove();}
-try{
-const resposta=await fetch(
-"https://nominatim.openstreetmap.org/search?format=json&q="
-+encodeURIComponent(cidade)
-);
-const dados=await resposta.json();
-if(dados.length===0){alert("Cidade não encontrada");return;}
-const lat=dados[0].lat;
-const lon=dados[0].lon;
-
-map=L.map('map').setView([lat,lon],13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
 maxZoom:19
-}).addTo(map);
+}).addTo(map)
 
-L.marker([lat,lon])
-.addTo(map)
-.bindPopup("🚚 Objeto em "+cidade)
-.openPopup();
+L.marker([-6.7607,-36.4755]).addTo(map)
+.bindPopup("Objeto em Pedra Lavrada - PB")
+.openPopup()
 
-}catch(e){alert("Erro ao carregar mapa");}
 }
 
-function salvarHistorico(codigo){
-const historico=document.getElementById("historico");
-const item=document.createElement("div");
-item.className="history-item";
-item.innerHTML="Código rastreado: "+codigo;
-historico.prepend(item);
-}
 </script>
 
 </body>
-</html>
