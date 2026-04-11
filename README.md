@@ -1,245 +1,84 @@
-
-
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CekPack PRO | Rastreamento</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
-
-:root{
---bg:#020617;
---card:rgba(15,23,42,0.7);
---brand:#fbbf24;
---text:#f8fafc;
---muted:#94a3b8;
---border:rgba(255,255,255,0.08);
---ok:#10b981;
-}
-
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-font-family:'Plus Jakarta Sans',sans-serif;
-}
-
 body{
-background:var(--bg);
-color:var(--text);
-min-height:100vh;
-padding:20px;
+background:#020617;
+color:#fff;
+font-family:Arial;
+text-align:center;
 }
 
 .container{
-max-width:1100px;
+max-width:800px;
 margin:auto;
+padding:20px;
 }
 
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:40px;
-}
-
-.logo{
-font-size:24px;
-font-weight:800;
+h1{
 color:#fbbf24;
 }
 
-.live-dot{
-display:flex;
-align-items:center;
-gap:8px;
-font-size:12px;
-color:#10b981;
-font-weight:600;
-}
-
-.dot{
-width:8px;
-height:8px;
-background:#10b981;
-border-radius:50%;
-box-shadow:0 0 10px #10b981;
-animation:pulse 2s infinite;
-}
-
-@keyframes pulse{
-0%{opacity:1}
-50%{opacity:0.4}
-100%{opacity:1}
-}
-
-.hero{
-text-align:center;
-padding:40px 0;
-}
-
-.hero h1{
-font-size:40px;
-margin-bottom:10px;
-}
-
-.hero p{
-color:#94a3b8;
-margin-bottom:30px;
-}
-
-.search-box{
-display:flex;
-gap:10px;
-max-width:500px;
-margin:auto;
-background:#0f172a;
+input{
 padding:10px;
-border-radius:20px;
-border:1px solid rgba(255,255,255,0.08);
-}
-
-.search-box input{
-flex:1;
-background:none;
+width:60%;
+border-radius:10px;
 border:none;
-color:white;
-padding:12px;
-outline:none;
 }
 
-.search-box button{
+button{
+padding:10px 20px;
 background:#fbbf24;
 border:none;
-padding:12px 24px;
-border-radius:12px;
-font-weight:800;
+border-radius:10px;
+font-weight:bold;
 cursor:pointer;
 }
 
-#error{
+.result{
+margin-top:30px;
+background:#0f172a;
+padding:20px;
+border-radius:15px;
 display:none;
-margin-top:20px;
-color:red;
 }
 
-#results{
-display:none;
-margin-top:50px;
-}
-
-.card{
-background:rgba(15,23,42,0.7);
-border:1px solid rgba(255,255,255,0.08);
-padding:30px;
-border-radius:24px;
-}
-
-.res-id{
-font-size:32px;
-font-weight:800;
-color:#fbbf24;
-margin-bottom:20px;
-}
-
-.info-item{
-display:flex;
-justify-content:space-between;
-padding:10px 0;
-border-bottom:1px solid rgba(255,255,255,0.08);
-}
-
-.step{
-margin-top:20px;
-padding-left:20px;
-border-left:3px solid #fbbf24;
-}
-
-.step p{
-font-weight:700;
-}
-
-.step span{
-font-size:13px;
-color:#94a3b8;
+.status{
+color:#10b981;
+font-weight:bold;
 }
 
 #map{
 height:300px;
 margin-top:20px;
-border-radius:20px;
+border-radius:15px;
 }
-
 </style>
 </head>
 
 <body>
 
-<header class="container">
-
-<div class="logo">CekPack PRO</div>
-
-<div class="live-dot">
-<div class="dot"></div>
-SISTEMA ATIVO
-</div>
-
-</header>
-
 <div class="container">
 
-<section class="hero">
+<h1>CekPack PRO 📦</h1>
+<p>Rastreie seu pedido em tempo real</p>
 
-<h1>Sua carga, nossa prioridade.</h1>
+<input type="text" id="codigo" placeholder="Digite o código">
+<button onclick="rastrear()">Rastrear</button>
 
-<p>Rastreamento global em tempo real.</p>
-
-<div class="search-box">
-
-<input type="text" id="trackInput" placeholder="Código de rastreio">
-
-<button onclick="buscar()">Rastrear</button>
-
-</div>
-
-<p id="error">Objeto não localizado.</p>
-
-</section>
-
-<section id="results">
-
-<div class="card">
-
-<div id="res-id" class="res-id"></div>
-
-<div class="info-item">
-<span>Status</span>
-<strong id="res-status"></strong>
-</div>
-
-<div class="info-item">
-<span>Localização</span>
-<strong id="res-local"></strong>
-</div>
-
-<div class="info-item">
-<span>Entrega prevista</span>
-<strong>17/03/2026</strong>
-</div>
+<div class="result" id="resultado">
+<p><strong>Código:</strong> <span id="cod"></span></p>
+<p class="status">Status: Em trânsito 🚚</p>
+<p>Última atualização: Recife - PE</p>
 
 <div id="map"></div>
-
-<div class="step">
-<p>Objeto em rota</p>
-<span>Local: Pedra Lavrada - PB • Data: 15/03/2026</span>
 </div>
-
-</div>
-
-</section>
 
 </div>
 
@@ -247,48 +86,29 @@ SISTEMA ATIVO
 
 <script>
 
-let map
+function rastrear(){
+let codigo = document.getElementById("codigo").value;
 
-function buscar(){
-
-let code=document.getElementById("trackInput").value.trim()
-
-if(code==="BR987654321BR"){
-
-document.getElementById("results").style.display="block"
-document.getElementById("error").style.display="none"
-
-document.getElementById("res-id").innerText=code
-document.getElementById("res-status").innerText="Objeto em rota"
-document.getElementById("res-local").innerText="Pedra Lavrada - PB"
-
-setTimeout(initMap,200)
-
-}else{
-
-document.getElementById("results").style.display="none"
-document.getElementById("error").style.display="block"
-
+if(codigo == ""){
+alert("Digite um código!");
+return;
 }
 
-}
+document.getElementById("resultado").style.display = "block";
+document.getElementById("cod").innerText = codigo;
 
-function initMap(){
+// Coordenadas Recife
+var map = L.map('map').setView([-8.0476, -34.8770], 13);
 
-if(map){
-map.remove()
-}
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+}).addTo(map);
 
-map=L.map('map').setView([-6.7607,-36.4755],11)
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-maxZoom:19
-}).addTo(map)
-
-L.marker([-6.7607,-36.4755]).addTo(map)
-.bindPopup("Objeto em Pedra Lavrada - PB")
-.openPopup()
-
+L.marker([-8.0476, -34.8770]).addTo(map)
+.bindPopup("Seu pedido está aqui 📦")
+.openPopup();
 }
 
 </script>
+
+</body>
+</html>
