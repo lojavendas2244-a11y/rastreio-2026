@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -111,4 +111,3 @@ L.marker([-8.0476, -34.8770]).addTo(map)
 </script>
 
 </body>
-</html>
