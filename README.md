@@ -1,4 +1,3 @@
-
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -52,6 +51,7 @@ display:none;
 .status{
 color:#10b981;
 font-weight:bold;
+line-height:1.6;
 }
 
 #map{
@@ -74,8 +74,12 @@ border-radius:15px;
 
 <div class="result" id="resultado">
 <p><strong>Código:</strong> <span id="cod"></span></p>
-<p class="status">Status: Em trânsito 🚚</p>
-<p id="cidade">Última atualização:</p>
+
+<p class="status" id="status">
+Status: Objeto recebido pelos Correios<br>
+Timbaúba - PE<br>
+Data: 28/04/2026
+</p>
 
 <div id="map"></div>
 </div>
@@ -96,32 +100,31 @@ alert("Digite um código!");
 return;
 }
 
-// VALIDAÇÃO DO CÓDIGO
+// valida código
 if(codigo !== "BR123456789BR"){
 alert("Código não encontrado!");
 return;
 }
 
-// MOSTRA RESULTADO
+// mostra resultado
 document.getElementById("resultado").style.display = "block";
 document.getElementById("cod").innerText = codigo;
-document.getElementById("cidade").innerText = "Última atualização: Timbaúba - PE";
 
-// REMOVE MAPA ANTIGO
+// remove mapa antigo
 if(map){
 map.remove();
 }
 
-// COORDENADAS TIMBAÚBA
+// coordenadas Timbaúba
 let lat = -7.5057;
 let lng = -35.3186;
 
-// CRIA MAPA
+// cria mapa
 map = L.map('map').setView([lat, lng], 13);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-// MARCADOR COM NOME FIXO
+// marcador com nome fixo
 L.marker([lat, lng]).addTo(map)
 .bindPopup("Seu pedido está em Timbaúba - PE 📦")
 .openPopup()
