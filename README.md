@@ -1,3 +1,4 @@
+
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -88,32 +89,51 @@ border-radius:15px;
 let map;
 
 function rastrear(){
-let codigo = document.getElementById("codigo").value.trim();
+let codigo = document.getElementById("codigo").value.trim().toUpperCase();
 
 if(codigo === ""){
 alert("Digite um código!");
 return;
 }
 
-// Mostra resultado
+// VALIDAÇÃO DO CÓDIGO
+if(codigo !== "BR123456789BR"){
+alert("Código não encontrado!");
+return;
+}
+
+// MOSTRA RESULTADO
 document.getElementById("resultado").style.display = "block";
 document.getElementById("cod").innerText = codigo;
 document.getElementById("cidade").innerText = "Última atualização: Timbaúba - PE";
 
-// Remove mapa antigo
+// REMOVE MAPA ANTIGO
 if(map){
 map.remove();
 }
 
-// Coordenadas Timbaúba
+// COORDENADAS TIMBAÚBA
 let lat = -7.5057;
 let lng = -35.3186;
 
-// Criar mapa
+// CRIA MAPA
 map = L.map('map').setView([lat, lng], 13);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-// Marcador com nome FIXO
+// MARCADOR COM NOME FIXO
 L.marker([lat, lng]).addTo(map)
-.bindPopup("Seu pedido está em Timbaúba - PE 📦
+.bindPopup("Seu pedido está em Timbaúba - PE 📦")
+.openPopup()
+.bindTooltip("Timbaúba - PE", {
+permanent: true,
+direction: "top",
+offset: [0, -10]
+});
+
+}
+
+</script>
+
+</body>
+</html>
