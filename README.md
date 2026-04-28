@@ -74,7 +74,7 @@ border-radius:15px;
 <div class="result" id="resultado">
 <p><strong>Código:</strong> <span id="cod"></span></p>
 <p class="status">Status: Em trânsito 🚚</p>
-<p>Última atualização: Timbaúba - PE</p>
+<p id="cidade">Última atualização:</p>
 
 <div id="map"></div>
 </div>
@@ -85,35 +85,35 @@ border-radius:15px;
 
 <script>
 
-let map; // evita criar vários mapas
+let map;
 
 function rastrear(){
-let codigo = document.getElementById("codigo").value;
+let codigo = document.getElementById("codigo").value.trim();
 
 if(codigo === ""){
 alert("Digite um código!");
 return;
 }
 
+// Mostra resultado
 document.getElementById("resultado").style.display = "block";
 document.getElementById("cod").innerText = codigo;
+document.getElementById("cidade").innerText = "Última atualização: Timbaúba - PE";
 
-// limpa mapa antigo se já existir
+// Remove mapa antigo
 if(map){
 map.remove();
 }
 
-// Coordenadas Timbaúba - PE
-map = L.map('map').setView([-7.5057, -35.3186], 13);
+// Coordenadas Timbaúba
+let lat = -7.5057;
+let lng = -35.3186;
+
+// Criar mapa
+map = L.map('map').setView([lat, lng], 13);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-L.marker([-7.5057, -35.3186]).addTo(map)
-.bindPopup("Seu pedido está em Timbaúba - PE 📦")
-.openPopup();
-}
-
-</script>
-
-</body>
-</html>
+// Marcador com nome FIXO
+L.marker([lat, lng]).addTo(map)
+.bindPopup("Seu pedido está em Timbaúba - PE 📦
