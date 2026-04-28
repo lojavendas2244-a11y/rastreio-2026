@@ -1,4 +1,3 @@
-
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -75,7 +74,7 @@ border-radius:15px;
 <div class="result" id="resultado">
 <p><strong>Código:</strong> <span id="cod"></span></p>
 <p class="status">Status: Em trânsito 🚚</p>
-<p>Última atualização: Recife - PE</p>
+<p>Última atualização: Timbaúba - PE</p>
 
 <div id="map"></div>
 </div>
@@ -86,10 +85,12 @@ border-radius:15px;
 
 <script>
 
+let map; // evita criar vários mapas
+
 function rastrear(){
 let codigo = document.getElementById("codigo").value;
 
-if(codigo == ""){
+if(codigo === ""){
 alert("Digite um código!");
 return;
 }
@@ -97,17 +98,22 @@ return;
 document.getElementById("resultado").style.display = "block";
 document.getElementById("cod").innerText = codigo;
 
-// Coordenadas Recife
-var map = L.map('map').setView([-8.0476, -34.8770], 13);
+// limpa mapa antigo se já existir
+if(map){
+map.remove();
+}
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-}).addTo(map);
+// Coordenadas Timbaúba - PE
+map = L.map('map').setView([-7.5057, -35.3186], 13);
 
-L.marker([-8.0476, -34.8770]).addTo(map)
-.bindPopup("Seu pedido está aqui 📦")
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+L.marker([-7.5057, -35.3186]).addTo(map)
+.bindPopup("Seu pedido está em Timbaúba - PE 📦")
 .openPopup();
 }
 
 </script>
 
 </body>
+</html>
