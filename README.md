@@ -1,3 +1,4 @@
+
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -75,11 +76,7 @@ border-radius:15px;
 <div class="result" id="resultado">
 <p><strong>Código:</strong> <span id="cod"></span></p>
 
-<p class="status" id="status">
-Status: Objeto recebido pelos Correios<br>
-Timbaúba - PE<br>
-Data: 28/04/2026
-</p>
+<p class="status" id="status"></p>
 
 <div id="map"></div>
 </div>
@@ -110,30 +107,30 @@ return;
 document.getElementById("resultado").style.display = "block";
 document.getElementById("cod").innerText = codigo;
 
+// status atualizado
+document.getElementById("status").innerHTML = `
+Status: Em trânsito<br>
+Recife - PE<br>
+Data: 29/04/2026
+`;
+
 // remove mapa antigo
 if(map){
 map.remove();
 }
 
-// coordenadas Timbaúba
-let lat = -7.5057;
-let lng = -35.3186;
+// coordenadas Recife
+let lat = -8.0476;
+let lng = -34.8770;
 
 // cria mapa
-map = L.map('map').setView([lat, lng], 13);
+map = L.map('map').setView([lat, lng], 14);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-// marcador com nome fixo
-L.marker([lat, lng]).addTo(map)
-.bindPopup("Seu pedido está em Timbaúba - PE 📦")
-.openPopup()
-.bindTooltip("Timbaúba - PE", {
-permanent: true,
-direction: "top",
-offset: [0, -10]
-});
-
+// marcador
+let marker = L.marker([lat, lng]).addTo(map);
+marker.bindPopup("📍 Recife - PE").openPopup();
 }
 
 </script>
