@@ -107,33 +107,36 @@ return;
 document.getElementById("resultado").style.display = "block";
 document.getElementById("cod").innerText = codigo;
 
-// status atualizado
+// STATUS FINAL
 document.getElementById("status").innerHTML = `
-Status: Em trânsito<br>
-Recife - PE<br>
-Data: 29/04/2026
+30/04/2026 <br>
+🚚 Objeto em rota
 `;
 
-// remove mapa antigo
+// COORDENADAS JOÃO PESSOA
+let lat = -7.11532;
+let lng = -34.861;
+
+// evita bug ao rastrear mais de uma vez
 if(map){
 map.remove();
 }
 
-// coordenadas Recife
-let lat = -8.0476;
-let lng = -34.8770;
-
 // cria mapa
-map = L.map('map').setView([lat, lng], 14);
+map = L.map('map').setView([lat, lng], 12);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+// camada do mapa
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+attribution: '© OpenStreetMap'
+}).addTo(map);
 
 // marcador
-let marker = L.marker([lat, lng]).addTo(map);
-marker.bindPopup("📍 Recife - PE").openPopup();
+L.marker([lat, lng]).addTo(map)
+.bindPopup("Objeto em João Pessoa - PB")
+.openPopup();
+
 }
 
 </script>
 
 </body>
-</html>
