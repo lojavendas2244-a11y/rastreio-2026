@@ -1,4 +1,3 @@
-
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -107,15 +106,19 @@ return;
 document.getElementById("resultado").style.display = "block";
 document.getElementById("cod").innerText = codigo;
 
-// STATUS FINAL
+// DATA AUTOMÁTICA
+let hoje = new Date();
+let dataFormatada = hoje.toLocaleDateString('pt-BR');
+
+// STATUS
 document.getElementById("status").innerHTML = `
-30/04/2026 <br>
+${dataFormatada} <br>
 🚚 Objeto em rota
 `;
 
-// COORDENADAS JOÃO PESSOA
-let lat = -7.11532;
-let lng = -34.861;
+// COORDENADAS MACAÍBA - RN
+let lat = -5.8583;
+let lng = -35.3553;
 
 // evita bug ao rastrear mais de uma vez
 if(map){
@@ -132,7 +135,7 @@ attribution: '© OpenStreetMap'
 
 // marcador
 L.marker([lat, lng]).addTo(map)
-.bindPopup("Objeto em João Pessoa - PB")
+.bindPopup("Objeto em Macaíba - RN")
 .openPopup();
 
 }
