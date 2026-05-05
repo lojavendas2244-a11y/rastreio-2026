@@ -106,36 +106,35 @@ return;
 document.getElementById("resultado").style.display = "block";
 document.getElementById("cod").innerText = codigo;
 
-// DATA AUTOMÁTICA
-let hoje = new Date();
-let dataFormatada = hoje.toLocaleDateString('pt-BR');
-
 // STATUS
-document.getElementById("status").innerHTML = `
-${dataFormatada} <br>
-🚚 Objeto em rota
-`;
+document.getElementById("status").innerHTML =
+"🚚 Objeto em rota<br>📍 Localização: Mossoró - RN<br>📅 Data: 05/05/2026";
 
-// COORDENADAS MACAÍBA - RN
-let lat = -5.8583;
-let lng = -35.3553;
+// COORDENADAS DE MOSSORÓ - RN
+let lat = -5.1875;
+let lng = -37.3441;
 
-// evita bug ao rastrear mais de uma vez
-if(map){
-map.remove();
-}
+// cria mapa se não existir
+if(!map){
+map = L.map('map').setView([lat, lng], 13);
 
-// cria mapa
-map = L.map('map').setView([lat, lng], 12);
-
-// camada do mapa
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 attribution: '© OpenStreetMap'
 }).addTo(map);
+}else{
+map.setView([lat, lng], 13);
+}
 
-// marcador
+// remove marcadores antigos
+map.eachLayer(function(layer){
+if(layer instanceof L.Marker){
+map.removeLayer(layer);
+}
+});
+
+// adiciona marcador
 L.marker([lat, lng]).addTo(map)
-.bindPopup("Objeto em Macaíba - RN")
+.bindPopup("Objeto em rota - Mossoró/RN")
 .openPopup();
 
 }
@@ -143,3 +142,4 @@ L.marker([lat, lng]).addTo(map)
 </script>
 
 </body>
+</html>
